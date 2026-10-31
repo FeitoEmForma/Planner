@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#11352c">
+  <meta name="description" content="Calculadora de impressão 3D, custos, preços e propostas comerciais da Feito em Forma.">
+  <title>Calculadora & Orçamentos | Feito em Forma</title>
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/redesign.css">
+  <link rel="stylesheet" href="assets/css/embedded.css">
+  <link rel="stylesheet" href="assets/css/catalogo.css">
+  <script defer src="assets/js/app.js"></script>
+  <script defer src="assets/js/catalogo.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Menu principal">
+      <div class="brand">
+<img class="brand-symbol" src="assets/img/brand-symbol.svg" alt="Símbolo da Feito em Forma">
+        <div class="brand-text"><strong>Feito em Forma</strong><small>Envio de orçamento</small></div>
+      </div>
+      <div class="sidebar-caption">SEU PAINEL COMERCIAL</div>
+      <nav class="nav" aria-label="Seções">
+        <button type="button" class="nav-link active" data-tab="calculadora" aria-current="page"><span class="nav-ico">◫</span> Calculadora</button>
+        <button type="button" class="nav-link" data-tab="orcamento"><span class="nav-ico">▤</span> Orçamento <span id="navCount" class="count-pill">0</span></button>
+        
+        <button type="button" class="nav-link" data-tab="configuracoes"><span class="nav-ico">⚙</span> Custos e ajustes</button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-info"><span class="status-dot"></span><span>Calculadora integrada ao Planner online.</span></div>
+      <div class="sidebar-foot">Feito em Forma <span>•</span> Feito para lembrar.</div>
+    </aside>
+
+    <main class="main">
+      <nav class="embedded-nav" aria-label="Etapas da calculadora integrada">
+        <button type="button" data-tab="calculadora">◫ Calculadora</button>
+        <button type="button" data-tab="orcamento">▤ Orçamento</button>
+        <button type="button" data-tab="configuracoes">⚙ Custos e ajustes</button>
+      </nav>
+      <header class="topbar">
+        <div class="breadcrumb">FEITO EM FORMA <span>/</span> <span id="breadcrumbSection">CALCULADORA</span></div>
+        <div class="top-actions"><span class="top-label"><span class="status-dot"></span> SISTEMA DE PRECIFICAÇÃO 3D</span><button type="button" class="btn btn-small btn-outline" data-goto="orcamento">Ver orçamento <span id="topCount">(0)</span></button></div>
+      </header>
+
+      <section id="panel-calculadora" class="panel active" aria-label="Calculadora">
+        <div class="page-head"><div><div class="eyebrow">PRECIFICAÇÃO INTELIGENTE</div><h1>Feito em Forma</h1><p>Calcule seus custos, monte a proposta e envie o orçamento com a mesma identidade do seu Planner.</p></div><div class="head-mark"><span>✦</span> PRECIFICAÇÃO EM TEMPO REAL</div></div>
+        <div class="calc-grid">
+          <div class="calc-form-stack">
+            <section class="surface">
+              <div class="surface-header"><div><div class="section-counter numbered"><b>1</b><span>DADOS DA PEÇA</span></div><h2>Informações do produto</h2></div><span class="tiny-chip">EDITÁVEL</span></div>
+              <div class="form-grid">
+                <label class="field full"><span>Nome do produto <i>*</i></span><input id="prod_nome" type="text" maxlength="120" value="Suporte Auto-irrigável Planta" placeholder="Ex.: Chaveiro personalizado"></label>
+                <label class="field"><span>Tipo de filamento</span><select id="prod_material"><option>PLA</option><option>PETG</option><option>ABS</option><option>TPU</option><option>Outro</option></select></label>
+                <label class="field"><span>Quantidade de peças <i>*</i></span><input id="prod_quantidade" type="number" min="1" max="100000" step="1" value="1"></label>
+                <label class="field full"><span>Preço deste filamento por kg <small>(opcional: usa o custo padrão se vazio)</small></span><div class="input-unit"><span>R$</span><input id="prod_custo_filamento" type="number" min="0" step="0.01" placeholder="Usar custo das configurações"></div></label>
+                <label class="field"><span>Peso total de material <small>g/peça</small></span><div class="input-unit"><input id="prod_peso" type="number" min="0" step="0.1" value="120"><span>g</span></div><small>Inclua suportes e brim no peso usado.</small></label>
+                <label class="field"><span>Tempo de impressão <small>h/peça</small></span><div class="input-unit"><input id="prod_temp_imp" type="number" min="0" step="0.1" value="6"><span>h</span></div></label>
+                <label class="field"><span>Preparação/acabamento <small>h/peça</small></span><div class="input-unit"><input id="prod_temp_prep" type="number" min="0" step="0.1" value="3"><span>h</span></div></label>
+                <label class="field"><span>Embalagem <small>R$/peça</small></span><div class="input-unit"><span>R$</span><input id="prod_emb" type="number" min="0" step="0.01" value="2.50"></div></label>
+                <label class="field"><span>Acessórios e extras <small>R$/peça</small></span><div class="input-unit"><span>R$</span><input id="prod_extras" type="number" min="0" step="0.01" value="2.00"></div></label>
+                <label class="field full"><span>Descrição breve para o cliente <small>(opcional)</small></span><input id="prod_descricao" maxlength="180" type="text" placeholder="Ex.: PLA, cor azul, personalizado com nome"></label>
+              </div>
+            </section>
+            <section class="surface">
+              <div class="surface-header"><div><div class="section-counter numbered"><b>2</b><span>FORMAÇÃO DE PREÇO</span></div><h2>Estratégia de venda</h2></div></div>
+              <div class="form-grid">
+                <label class="field"><span>Canal de venda</span><select id="prod_canal"><option value="direta">Venda direta / WhatsApp</option><option value="marketplace" selected>Marketplace</option></select></label>
+                <label class="field"><span>Margem desejada <small>sobre venda</small></span><div class="input-unit"><input id="prod_margem_pct" type="number" step="1" min="0" max="99" value="35"><span>%</span></div></label>
+                <div id="marketplaceFields" class="subfields full"><label class="field"><span>Comissão <small>sobre o preço</small></span><div class="input-unit"><input id="prod_taxa_pct" type="number" min="0" max="99" step="0.1" value="19"><span>%</span></div></label><label class="field"><span>Taxa fixa <small>por unidade</small></span><div class="input-unit"><span>R$</span><input id="prod_taxa_fixa" type="number" min="0" step="0.01" value="4.00"></div></label></div>
+                <label class="field full"><span>Preço manual <small>(opcional: substitui o sugerido)</small></span><div class="input-unit"><span>R$</span><input id="prod_preco_manual" type="number" min="0" step="0.01" placeholder="Deixe vazio para usar o preço calculado"></div></label>
+              </div>
+              <div class="helper-note">A margem é calculada sobre o preço de venda, já descontando custos e taxas. A taxa fixa do marketplace é por unidade, como na sua calculadora original.</div>
+            </section>
+            <section class="surface compact">
+              <div class="surface-header"><div><div class="section-counter numbered"><b>3</b><span>PROJEÇÃO</span></div><h2>Simulador mensal</h2></div></div>
+              <label class="field"><span>Vendas estimadas no mês <small>(unidades)</small></span><input id="vendas_qtd" type="number" min="0" step="1" value="40"></label>
+              <div class="projection"><div><span>Faturamento previsto</span><strong id="kpi_faturamento">R$ 0,00</strong></div><div><span>Custos + taxas</span><strong id="kpi_custo">R$ 0,00</strong></div><div><span>Lucro estimado</span><strong class="green" id="kpi_lucro">R$ 0,00</strong></div></div>
+            </section>
+          </div>
+          <div class="calc-side">
+            <section class="price-card">
+              <div class="price-header"><span><span class="status-dot light"></span> CÁLCULO EM TEMPO REAL</span><span id="channelChip" class="channel-chip">MARKETPLACE</span></div>
+              <div class="price-caption">PREÇO DE VENDA POR UNIDADE</div><div id="priceUnit" class="price-big">R$ 0,00</div><div class="price-secondary">Preço sugerido pelos custos: <strong id="suggestedUnit">R$ 0,00</strong></div>
+              <div class="price-divider"></div>
+              <div class="price-metrics"><div><span>Preço total (<span id="summaryQty">1</span> un.)</span><strong id="priceTotal">R$ 0,00</strong></div><div><span>Custo de produção/un.</span><strong id="costUnit">R$ 0,00</strong></div><div><span>Lucro por unidade</span><strong id="profitUnit">R$ 0,00</strong></div><div><span>Margem real</span><strong id="marginReal">0,0%</strong></div></div>
+              <div id="calcFeedback" class="calc-feedback" role="status"></div>
+              <button id="addItemBtn" type="button" class="btn btn-orange btn-full">+ Adicionar ao orçamento <span>→</span></button>
+              <div class="price-tip">A proposta enviada ao cliente não revela custos, comissão ou margem de lucro.</div>
+            </section>
+            <section class="surface breakdown"><div class="surface-header"><div><div class="section-counter">RAIO-X DO PREÇO</div><h2>Detalhamento por peça</h2></div></div>
+              <div class="breakdown-row"><span>Filamento</span><strong id="c_material">R$ 0,00</strong></div><div class="breakdown-row"><span>Energia elétrica</span><strong id="c_energia">R$ 0,00</strong></div><div class="breakdown-row"><span>Desgaste/manutenção</span><strong id="c_depreciacao">R$ 0,00</strong></div><div class="breakdown-row"><span>Mão de obra</span><strong id="c_maodeobra">R$ 0,00</strong></div><div class="breakdown-row"><span>Embalagem + extras</span><strong id="c_embalagem">R$ 0,00</strong></div><div class="breakdown-row total"><span>Custo direto</span><strong id="c_total_direto">R$ 0,00</strong></div><div class="breakdown-row"><span>Taxas de venda</span><strong id="c_taxa_mkt_total">R$ 0,00</strong></div><div class="breakdown-row profit"><span>Lucro estimado</span><strong id="c_lucro_unit">R$ 0,00</strong></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-orcamento" class="panel" aria-label="Orçamento">
+        <div class="page-head"><div><div class="eyebrow">ATENDIMENTO AO CLIENTE</div><h1>Seu próximo <em>orçamento.</em></h1><p>Monte uma proposta com várias peças e envie uma mensagem pronta pelo WhatsApp.</p></div><button type="button" id="newQuote" class="btn btn-outline">+ Novo orçamento</button></div>
+        <div class="quote-grid">
+          <div class="quote-edit-col">
+            <section class="surface"><div class="surface-header"><div><div class="section-counter numbered"><b>1</b><span>DADOS DO CLIENTE</span></div><h2>Para quem é a proposta?</h2></div></div>
+              <div class="form-grid"><label class="field"><span>Nome do cliente</span><input id="cliente_nome" type="text" maxlength="100" placeholder="Nome ou empresa"></label><label class="field"><span>WhatsApp do cliente <small>(opcional)</small></span><input id="cliente_telefone" type="tel" maxlength="24" placeholder="11 99999-9999"></label><label class="field full"><span>Data de validade</span><input id="orc_validade" type="date"></label></div>
+            </section>
+            <section class="surface"><div class="surface-header"><div><div class="section-counter numbered"><b>2</b><span>ITENS DA PROPOSTA</span></div><h2>Produtos selecionados <span class="mini-count" id="itemCount">0</span></h2></div><button id="backCalcBtn" type="button" class="btn btn-small btn-outline">+ Adicionar item</button></div>
+              <div id="quoteItems" class="quote-items"></div>
+            </section>
+            <section class="surface"><div class="surface-header"><div><div class="section-counter numbered"><b>3</b><span>CONDIÇÕES</span></div><h2>Condições comerciais</h2></div></div>
+              <div class="form-grid"><label class="field"><span>Desconto geral</span><div class="input-unit"><input id="orc_desconto" type="number" min="0" max="100" step="0.1" value="0"><span>%</span></div></label><label class="field"><span>Frete cobrado do cliente</span><div class="input-unit"><span>R$</span><input id="orc_frete" type="number" min="0" step="0.01" value="0"></div></label><label class="field"><span>Custo real do frete <small>(interno)</small></span><div class="input-unit"><span>R$</span><input id="orc_custo_frete" type="number" min="0" step="0.01" value="0"></div></label><label class="field"><span>Prazo estimado</span><input id="orc_prazo" type="text" maxlength="100" placeholder="Ex.: 5 dias úteis"></label><label class="field full"><span>Forma de pagamento</span><input id="orc_pagamento" type="text" maxlength="140" placeholder="Ex.: PIX, 50% de entrada"></label><label class="field full"><span>Observações ao cliente</span><textarea id="orc_observacoes" rows="3" maxlength="600" placeholder="Ex.: Arte sujeita à aprovação antes da produção."></textarea></label></div>
+            </section>
+            <section class="surface"><div class="surface-header"><div><div class="section-counter">RESULTADOS INTERNOS</div><h2>Viabilidade da proposta</h2></div></div><div class="internal-stats"><div><span>Receita total</span><strong id="quoteRevenue">R$ 0,00</strong></div><div><span>Custos estimados</span><strong id="quoteCosts">R$ 0,00</strong></div><div><span>Lucro estimado</span><strong id="quoteProfit">R$ 0,00</strong></div><div><span>Margem real</span><strong id="quoteMargin">0,0%</strong></div></div><div id="quoteWarning" class="helper-note"></div></section>
+          </div>
+          <div class="quote-preview-col">
+            <div class="preview-label"><span>PRÉVIA DA PROPOSTA</span><span class="client-safe">✓ Apenas dados comerciais</span></div>
+            <article class="proposal" id="proposalPreview" aria-label="Proposta comercial para impressão"></article>
+            <section class="wa-preview" aria-label="Prévia da mensagem do WhatsApp">
+              <div class="wa-preview-head"><span>☷ &nbsp;Mensagem pronta para o WhatsApp</span><span>VISÃO DO CLIENTE</span></div>
+              <pre id="whatsappPreviewText" class="wa-preview-message"></pre>
+            </section>
+            <div class="quote-buttons"><button type="button" id="savePlanner" class="btn btn-dark btn-full">✓ Salvar no Planner (nuvem)</button><button type="button" id="markPlannerSent" class="btn btn-outline btn-full">✓ Confirmar envio e marcar como enviado</button><p id="plannerSaveStatus" class="planner-save-status" aria-live="polite">O envio ao WhatsApp também salvará a proposta no Planner antes de abrir a conversa.</p><button type="button" id="sendWhatsapp" class="btn btn-whatsapp btn-full">Enviar pelo WhatsApp ↗</button><button type="button" id="copyQuote" class="btn btn-outline btn-full">Copiar mensagem</button><div class="quote-buttons-row"><button id="printQuote" type="button" class="btn btn-outline">Imprimir / salvar PDF</button></div></div>
+            <p class="privacy-note">O WhatsApp abrirá com a mensagem preenchida. Confira o destinatário e toque em enviar. Sem número informado, selecione um contato no WhatsApp.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-historico" class="panel" aria-label="Histórico">
+        <div class="page-head"><div><div class="eyebrow">PROPOSTAS REGISTRADAS</div><h1>Histórico de <em>orçamentos.</em></h1><p>Recupere propostas anteriores para ajustar preços ou reenviar ao cliente.</p></div><div class="head-actions"><button type="button" class="btn btn-outline" id="exportHistory">Exportar backup (.xlsx)</button><button type="button" class="btn btn-outline" id="importHistory">Importar backup</button><input type="file" id="importFile" accept=".json,.xlsx,application/json,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden></div></div>
+        <section class="surface history-surface"><label class="field search-field"><span>Localizar orçamento</span><input type="search" id="historySearch" placeholder="Buscar por cliente, produto ou número da proposta..."></label><div id="historyList" class="history-list"></div></section>
+      </section>
+
+      <section id="panel-configuracoes" class="panel" aria-label="Custos e ajustes">
+        <div class="page-head"><div><div class="eyebrow">SEUS PARÂMETROS DE PRODUÇÃO</div><h1>Custos sempre <em>atualizados.</em></h1><p>Personalize os valores do seu processo produtivo. Os cálculos passam a usar esses custos imediatamente.</p></div></div>
+        <div class="settings-wrap"><section class="surface"><div class="surface-header"><div><div class="section-counter">PARÂMETROS DO SEU ATELIÊ</div><h2>Custos de referência</h2></div></div>
+          <div class="form-grid"><label class="field"><span>Filamento por kg</span><div class="input-unit"><span>R$</span><input id="p_filamento" type="number" min="0" step="0.01" value="120.00"></div></label><label class="field"><span>Reserva para perdas <small>(material)</small></span><div class="input-unit"><input id="p_perdas" type="number" min="0" max="300" step="0.5" value="0"><span>%</span></div></label><label class="field"><span>Energia por kWh</span><div class="input-unit"><span>R$</span><input id="p_energia" type="number" min="0" step="0.01" value="0.95"></div></label><label class="field"><span>Consumo médio da máquina</span><div class="input-unit"><input id="p_consumo" type="number" min="0" step="1" value="150"><span>W</span></div></label><label class="field"><span>Manutenção/depreciação</span><div class="input-unit"><span>R$/h</span><input id="p_depreciacao" type="number" min="0" step="0.01" value="1.50"></div></label><label class="field"><span>Mão de obra</span><div class="input-unit"><span>R$/h</span><input id="p_maodeobra" type="number" min="0" step="0.01" value="20.00"></div></label></div>
+          <div class="helper-note">A potência da impressora é informada em watts: 150 W = 0,15 kW. Defina o consumo médio real a partir do equipamento e das medições de uso. A reserva para perdas é aplicada apenas ao custo do filamento.</div><div class="settings-actions"><button type="button" id="resetSettings" class="btn btn-outline">Restaurar parâmetros originais</button><span id="settingsStatus">As alterações são salvas automaticamente.</span></div>
+        </section><section class="surface"><div class="surface-header"><div><div class="section-counter">COMO FUNCIONA</div><h2>Seu preço, explicado</h2></div></div><div class="explain-formula">Preço sugerido = (custo de produção + taxa fixa) ÷ (1 − comissão − margem desejada).</div><p class="info-paragraph">A fórmula do seu script foi preservada. Aqui, a margem representa a porcentagem do preço final que sobra após os custos e as taxas. Se comissão + margem atingir 100%, o preço não poderá ser calculado.</p><p class="info-paragraph">Os orçamentos salvos guardam os preços e custos usados na data do orçamento. Alterações futuras nos parâmetros não modificam propostas antigas.</p></section></div>
+      </section>
+
+      <footer class="site-footer">© <span id="currentYear"></span> Feito em Forma <span>•</span> Feito para lembrar. <span class="site-footer-right">Calculadora e orçamentos de impressão 3D</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

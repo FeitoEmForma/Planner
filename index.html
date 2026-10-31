@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#11352c">
+  <meta name="description" content="Planner de orçamentos e pedidos da Feito em Forma. Acompanhe cada etapa, do orçamento à entrega.">
+  <title>Planner de Orçamentos | Feito em Forma</title>
+  <link rel="icon" type="image/svg+xml" href="icone.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="studio-enhancements.css">
+</head>
+<body>
+  <div class="layout" id="appShell" hidden>
+    <div id="mobileNavScrim" class="mobile-nav-scrim" hidden></div>
+    <aside class="sidebar" id="appSidebar" aria-label="Menu principal">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="m20 3 15 8.5v17L20 37 5 28.5v-17L20 3Z" stroke="currentColor" stroke-width="2.3"/><path d="m5 11.5 15 9 15-9M20 20.5V37" stroke="currentColor" stroke-width="2"/><path d="m12 7.5 15 9" stroke="currentColor" stroke-width="2"/></svg></div>
+        <div><strong>feito em forma<span class="brand-dot">.</span></strong><small>gestão de orçamentos</small></div>
+        <button type="button" id="mobileMenuClose" class="mobile-menu-close" aria-label="Fechar menu">×</button>
+      </div>
+      <div class="nav-caption">ESPAÇO DE TRABALHO</div>
+      <nav class="side-nav" aria-label="Navegação principal">
+        <button class="nav-item active" data-view="board" type="button"><span class="nav-icon">▦</span><span>Quadro de pedidos</span></button>
+        <button class="nav-item" data-view="list" type="button"><span class="nav-icon">☷</span><span>Todos os orçamentos</span></button>
+        <button class="nav-item" data-view="calculator" type="button"><span class="nav-icon">✎</span><span>Envio de orçamento</span></button>
+        <button class="nav-item" data-view="reports" type="button"><span class="nav-icon">▥</span><span>Indicadores</span></button>
+        <button class="nav-item" data-studio-view="inventory" type="button"><span class="nav-icon">▣</span><span>Estoque</span></button>
+        <button class="nav-item" data-studio-view="finance" type="button"><span class="nav-icon">◴</span><span>Financeiro</span></button>
+      </nav>
+      <div class="side-spacer"></div>
+      <div class="sidebar-tools">
+        <button class="nav-item subnav" id="refreshCloud" type="button"><span class="nav-icon">⟳</span>Atualizar nuvem</button>
+        <div class="nav-caption">SEUS DADOS</div>
+        <button class="nav-item subnav" id="exportXlsx" type="button"><span class="nav-icon">▣</span>Backup financeiro Excel (.xlsx)</button>
+        <button class="nav-item subnav" id="exportJson" type="button"><span class="nav-icon">↧</span>Backup JSON (restaurável)</button>
+        <button class="nav-item subnav" id="importButton" type="button"><span class="nav-icon">↥</span>Importar dados</button>
+        <button class="nav-item subnav" id="exportCsv" type="button"><span class="nav-icon">▤</span>Exportar planilha</button>
+      </div>
+      <div class="sidebar-footer"><div class="footer-bullet"></div><div><b>Sincronização online</b><small>Acesse sua conta em qualquer dispositivo. Exporte backups regularmente.</small></div></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button type="button" id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="Abrir menu de funções" aria-controls="appSidebar" aria-expanded="false"><span aria-hidden="true">☰</span></button>
+        <div class="breadcrumb"><span>ÁREA DE TRABALHO</span><span class="bread-separator">/</span><strong id="breadcrumbTitle">Quadro de pedidos</strong></div>
+        <div class="top-actions"><div class="account"><small id="accountEmail"></small><button type="button" id="signOut" class="logout-button">Sair</button></div><span class="today" id="today"></span><button class="button primary" type="button" id="newQuoteTop"><span class="plus">+</span> Novo orçamento</button></div>
+      </header>
+      <div class="main-content">
+        <div class="heading-row"><div><div class="eyebrow"><span class="eyebrow-line"></span> CENTRAL DE PRODUÇÃO</div><h1 id="pageTitle">Seu trabalho em ordem<span class="heading-period">.</span></h1><p class="page-subtitle" id="pageSubtitle">Do primeiro contato à entrega, acompanhe cada pedido em um só lugar.</p></div><button type="button" class="button secondary mobile-new" id="newQuoteMobile">+ Novo orçamento</button></div>
+        <div class="sync-bar"><span class="sync-pill" id="syncPill">Conectando...</span><span>Pedidos seguros na sua conta</span></div>
+        <div id="legacyBanner" class="legacy-banner" hidden><div><strong>Orçamentos antigos encontrados</strong><p id="legacyCount"></p></div><button type="button" class="button secondary" id="migrateLegacy">Importar para a nuvem</button></div>
+        <section class="stats" id="stats" aria-label="Resumo dos orçamentos"></section>
+        <section class="calculator-workspace" id="calculatorWorkspace" hidden aria-label="Envio de orçamento e precificação 3D">
+          <div class="calculator-integrated-heading"><strong>Calculadora &amp; proposta comercial</strong><span>Salve na nuvem e acompanhe a etapa no Quadro de pedidos.</span></div>
+          <iframe id="calculatorFrame" title="Calculadora de impressão 3D e envio de orçamento" src="about:blank" allow="clipboard-write" loading="lazy"></iframe>
+        </section>
+        <section id="studioExtraWorkspace" class="studio-extra-workspace" hidden aria-label="Módulos de gestão financeira e estoque">
+          <div id="studioExtraContent"></div>
+        </section>
+        <section class="workspace" id="workspace">
+          <div class="toolbar" id="workspaceToolbar">
+            <div class="search-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5" stroke="currentColor" stroke-width="2" fill="none"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="searchInput" type="search" placeholder="Buscar cliente, pedido, produto ou código..." autocomplete="off" aria-label="Buscar orçamentos"><kbd>/</kbd></div>
+            <div class="filter-actions"><select id="priorityFilter" aria-label="Filtrar por prioridade"><option value="all">Todas prioridades</option><option value="alta">Alta prioridade</option><option value="media">Média prioridade</option><option value="baixa">Baixa prioridade</option></select><select id="deadlineFilter" aria-label="Filtrar por prazo"><option value="all">Todos os prazos</option><option value="late">Atrasados</option><option value="soon">Próximos 7 dias</option><option value="followup">Retorno pendente</option></select><select id="statusFilter" aria-label="Filtrar por etapa" hidden></select><input type="month" id="completionMonthFilter" aria-label="Mês da finalização" title="Filtrar pelo mês em que o pedido foi finalizado" hidden><button type="button" class="icon-button" id="clearFilters" title="Limpar filtros" aria-label="Limpar filtros">↺</button><button type="button" class="button secondary export-filtered" id="exportFilteredXlsx" hidden>⇩ Extrair filtrados (.xlsx)</button></div>
+          </div>
+          <div class="mobile-stage-picker" id="mobileStagePicker"><label for="mobileStage">Visualizar etapa</label><select id="mobileStage" aria-label="Escolher etapa do quadro de pedidos"></select></div>
+          <div class="board-tip" id="boardTip">↔ Arraste os cartões para mudar a etapa. Clique para editar os detalhes.</div>
+          <div id="boardView" class="board" aria-label="Quadro de orçamentos"></div>
+          <div id="listView" class="list-view" hidden></div>
+          <div id="reportsView" class="reports-view" hidden></div>
+        </section>
+        <footer class="main-footer">Feito em Forma — Feito para lembrar. <span>•</span> Planner de Orçamentos <span>•</span> <span id="saveStatus">Conectando à nuvem...</span></footer>
+      </div>
+    </main>
+    <nav class="mobile-shortcuts" aria-label="Acesso rápido">
+      <button type="button" class="nav-item active" data-view="board"><span class="nav-icon">▦</span><span>Pedidos</span></button>
+      <button type="button" class="nav-item" data-view="calculator"><span class="nav-icon">✎</span><span>Calcular</span></button>
+      <button type="button" class="nav-item" data-studio-view="finance"><span class="nav-icon">◴</span><span>Financeiro</span></button>
+      <button type="button" class="nav-item" data-studio-view="inventory"><span class="nav-icon">▣</span><span>Estoque</span></button>
+    </nav>
+  </div>
+
+  <div id="configGate" class="gate" hidden><div class="gate-card setup-card"><div class="gate-logo">⬡ <b>feito em forma<span>.</span></b></div><div class="gate-kicker">PRIMEIRA CONFIGURAÇÃO</div><h1>Seu Planner online está quase pronto.</h1><p id="configMessage"></p><div class="setup-steps"><p><b>1.</b> Crie um projeto no <a href="https://supabase.com/dashboard" target="_blank" rel="noopener noreferrer">Supabase ↗</a>.</p><p><b>2.</b> Execute <code>BANCO-DE-DADOS.sql</code> e <code>ATIVAR-MODULOS-STUDIO.sql</code> no SQL Editor.</p><p><b>3.</b> Preencha a URL e a chave publicável no arquivo <code>config.js</code> e publique no GitHub Pages.</p></div><p class="gate-help">Veja o guia <b>COMO-ATIVAR.md</b> no pacote ZIP. Nunca publique a senha do banco nem a service_role key.</p></div></div>
+  <div id="authGate" class="gate" hidden><div class="gate-card auth-card"><div class="gate-logo">⬡ <b>feito em forma<span>.</span></b></div><div class="gate-kicker">PLANNER DE ORÇAMENTOS • ONLINE</div><h1 id="authTitle">Acesse seu Planner</h1><p id="authSubtitle">Todos os seus orçamentos, em qualquer dispositivo.</p><form id="authForm"><label id="authEmailWrap">E-mail<input id="authEmail" type="email" placeholder="voce@exemplo.com" autocomplete="email" required></label><label id="authPasswordWrap">Senha<input id="authPass" type="password" minlength="6" placeholder="Pelo menos 6 caracteres" required></label><div id="authMessage" class="auth-message" role="status" hidden></div><button class="button primary auth-submit" id="authAction" type="submit">Entrar</button></form><div id="authModeLinks" class="auth-links"><button type="button" id="authLogin">Já tenho conta</button><button type="button" id="authReset">Esqueci a senha</button></div><p class="gate-help">A Calculadora, o Estoque e as demais funções do Planner estão disponíveis somente após o login.</p></div></div>
+  <div class="modal-overlay" id="quoteOverlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head"><div><div class="eyebrow small">FICHA DO PEDIDO</div><h2 id="modalTitle">Novo orçamento</h2><p class="modal-subtitle" id="modalCode">Organize todos os detalhes em um só lugar.</p></div><button class="close-button" type="button" data-close="quoteOverlay" aria-label="Fechar">×</button></div>
+      <form id="quoteForm">
+        <div class="modal-body">
+          <div class="form-section-name">Dados do cliente</div>
+          <div class="form-grid two"><label>Nome do cliente <span class="required">*</span><input id="fClient" name="client" type="text" maxlength="100" placeholder="Ex.: Mariana Silva" required></label><label>WhatsApp do cliente <span class="optional">(opcional)</span><input id="fPhone" name="phone" type="tel" maxlength="24" placeholder="(11) 99999-9999"></label></div>
+          <div class="form-grid one"><label>E-mail <span class="optional">(opcional)</span><input id="fEmail" name="email" type="email" maxlength="130" placeholder="cliente@exemplo.com"></label></div>
+          <div class="form-section-name">Detalhes do orçamento</div>
+          <div class="form-grid one"><label>Peça / produto / serviço <span class="required">*</span><input id="fProduct" name="product" type="text" maxlength="180" placeholder="Ex.: 25 chaveiros personalizados" required></label></div>
+          <div class="form-grid three"><label>Quantidade <input id="fQuantity" name="quantity" type="number" min="1" max="1000000" step="1" value="1" required></label><label>Preço de venda unitário (R$) <input id="fUnitPrice" name="unitPrice" type="text" inputmode="decimal" placeholder="0,00" value="" title="Valor cobrado por peça"></label><label>Custo de fabricação por peça (R$) <input id="fUnitCost" name="unitCost" type="text" inputmode="decimal" placeholder="0,00" value="" title="Material, energia, embalagem e demais custos por unidade"></label></div>
+          <div class="finance-preview" aria-live="polite">
+            <div><small>Valor bruto (venda)</small><output id="fTotal">R$ 0,00</output></div>
+            <div><small>Custo total da fabricação</small><output id="fCostTotal">R$ 0,00</output></div>
+            <div class="finance-highlight"><small>Valor líquido estimado</small><output id="fNet">R$ 0,00</output></div>
+            <div><small>Margem sobre a venda</small><output id="fMargin">0,0%</output></div>
+          </div>
+          <p class="finance-note">Líquido estimado = valor bruto − custo de fabricação. Inclua no custo unitário os materiais e despesas que deseja descontar; impostos, frete e taxas não informados não são considerados.</p>
+          <div class="form-grid two"><label>Etapa do pedido <select id="fStatus" name="status"></select></label><label>Prioridade <select id="fPriority" name="priority"><option value="media">Normal</option><option value="alta">Alta</option><option value="baixa">Baixa</option></select></label></div>
+          <div id="calculatorEditHint" class="calculator-edit-hint" hidden>Este orçamento foi criado na calculadora e pode ter vários itens, frete e descontos. Para alterar os preços detalhados, use <b>Editar na calculadora</b>. Alterar quantidades ou valores unitários aqui substitui o cálculo detalhado.</div>
+          <div class="form-section-name">Prazos e pagamento</div>
+          <div class="form-grid two"><label>Prazo combinado / entrega <input id="fDue" name="dueDate" type="date"></label><label>Próximo contato <input id="fFollowup" name="followUpDate" type="date"></label></div>
+          <div class="form-grid two"><label>Situação do pagamento <select id="fPayment" name="paymentStatus"><option value="nao_informado">Não informado</option><option value="pendente">Pendente</option><option value="parcial">Sinal / parcial recebido</option><option value="pago">Pago integralmente</option></select></label><label>Valor recebido (R$) <input id="fPaidAmount" name="paidAmount" type="text" inputmode="decimal" placeholder="0,00"></label></div>
+          <div class="form-grid one"><label>Observações <textarea id="fNotes" name="notes" rows="3" maxlength="1800" placeholder="Cores, tamanho, tipo de filamento, frete, detalhes da personalização..."></textarea></label></div>
+          <div id="quoteHistory" class="history" hidden></div>
+        </div>
+        <div class="modal-foot"><div class="modal-extras"><button type="button" class="text-action danger" id="deleteQuote" hidden>Excluir</button><button type="button" class="text-action" id="editInCalculator" hidden>Editar na calculadora ↗</button><button type="button" class="text-action" id="duplicateQuote" hidden>Duplicar</button><button type="button" class="text-action" id="copyQuote" hidden>Copiar resumo</button><button type="button" class="text-action" id="whatsappQuote" hidden>WhatsApp ↗</button></div><div class="modal-submit"><button type="button" class="button muted" data-close="quoteOverlay">Cancelar</button><button type="submit" class="button primary">Salvar orçamento</button></div></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="importOverlay" hidden><div class="modal small-modal" role="dialog" aria-modal="true" aria-labelledby="importTitle"><div class="modal-head"><div><div class="eyebrow small">TRAZER SEUS DADOS</div><h2 id="importTitle">Importar orçamentos</h2><p class="modal-subtitle">Envie os orçamentos para sua conta na nuvem.</p></div><button class="close-button" type="button" data-close="importOverlay" aria-label="Fechar">×</button></div><div class="modal-body"><label class="upload-area" for="importFile"><span class="upload-icon">↑</span><b>Escolher arquivo XLSX, JSON ou CSV</b><small>Backup Excel/JSON do Planner ou planilha CSV</small><input type="file" accept=".xlsx,.json,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/json,text/csv" id="importFile" hidden></label><div id="importInfo" class="import-info">Nenhum arquivo selecionado.</div><label class="import-mode-label">Como importar? <select id="importMode"><option value="merge">Adicionar sem apagar orçamentos existentes</option></select></label><p class="import-help">O arquivo CSV aceita colunas como <b>Cliente</b>, <b>Produto</b>, <b>Quantidade</b>, <b>Valor unitário</b>, <b>Custo unitário</b>, <b>Etapa</b>, <b>Prazo</b> e <b>WhatsApp</b>. <button class="inline-link" id="downloadTemplate" type="button">Baixar modelo CSV</button></p></div><div class="modal-foot end"><button class="button muted" type="button" data-close="importOverlay">Cancelar</button><button type="button" class="button primary" id="confirmImport" disabled>Importar arquivo</button></div></div></div>
+  <div class="modal-overlay" id="confirmOverlay" hidden><div class="modal small-modal confirm-modal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle"><div class="modal-head"><div><h2 id="confirmTitle">Confirmar exclusão</h2><p class="modal-subtitle" id="confirmText">Esta ação não pode ser desfeita.</p></div></div><div class="modal-foot end"><button type="button" class="button muted" id="cancelConfirm">Cancelar</button><button type="button" class="button danger-button" id="acceptConfirm">Excluir pedido</button></div></div></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="app.js" defer></script>
+  <script src="studio-enhancements.js" defer></script>
+</body>
+</html>
